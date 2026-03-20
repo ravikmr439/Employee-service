@@ -3,6 +3,8 @@ package com.ravi.employee.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,25 +28,31 @@ public class EmployeeController {
 	}
 
 	@PostMapping("/newEmployee")
-	public Employee create(@RequestBody Employee employee) {
-		return employeeService.save(employee);
+	public ResponseEntity<Employee> create(@RequestBody Employee employee) {
+		 Employee create= employeeService.save(employee);
+		 return ResponseEntity.ok(create);
 	}
 
 	@GetMapping("/getAllEmp")
-	public List<Employee> getAllEmployee() {
-		return employeeService.findAll();
+	public ResponseEntity<List<Employee>> getAllEmployee() {
+		List<Employee> getallEmp=employeeService.findAll();
+		return ResponseEntity.ok(getallEmp);
 	}
-	
-	@GetMapping("emp/{id}")
-	public Employee getEmpById(@PathVariable Long id)
-	{
-		return employeeService.findById(id);
+
+	@GetMapping("/emp/{id}")
+	public ResponseEntity<Employee> getEmpById(@PathVariable Long id) {
+		Employee employee =employeeService.findById(id);
+		
+		if (employee == null) {
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+	    }
+		return ResponseEntity.ok(employee);
 	}
 
 	@DeleteMapping("/emp/{id}")
-	public String deleteEmp(@PathVariable Long id) {
+	public ResponseEntity<String> deleteEmp(@PathVariable Long id) {
 		employeeService.delete(id);
-		return "Employee deleted successfully";
+		return ResponseEntity.ok("Employee deleted successfully");
 	}
 
 	/*
@@ -55,19 +63,19 @@ public class EmployeeController {
 	 * 
 	 * return "Employee details Updated"; }
 	 */
-	
+
 	@PutMapping("/emp/{id}")
-	public String update(@PathVariable Long id, @RequestBody Employee employee) {
+	public ResponseEntity<String> update(@PathVariable Long id, @RequestBody Employee employee) {
 
-	    Employee existing = employeeService.findById(id);
+		Employee existing = employeeService.findById(id);
 
-	    existing.setFirstName(employee.getFirstName());
-	    existing.setLastName(employee.getLastName());
-	    existing.setAge(employee.getAge());
-	    existing.setPhone(employee.getPhone());
+		existing.setFirstName(employee.getFirstName());
+		existing.setLastName(employee.getLastName());
+		existing.setAge(employee.getAge());
+		existing.setPhone(employee.getPhone());
 
-	    employeeService.save(existing);
+		employeeService.save(existing);
 
-	    return "Employee details Updated";
+		return ResponseEntity.ok("Employee details Updated");
 	}
 }
