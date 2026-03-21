@@ -27,7 +27,7 @@ public class Employee {
 
 	public Employee(Long id, String firstName, String lastName, int age, long phone) {
 
-		id = id;
+		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.age = age;
@@ -39,7 +39,7 @@ public class Employee {
 	}
 
 	public void setId(Long id) {
-		id = id;
+		this.id = id;
 	}
 
 	public String getFirstName() {
