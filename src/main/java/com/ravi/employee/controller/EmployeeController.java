@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ravi.employee.Exception.InvalidAgeException;
 import com.ravi.employee.entity.Employee;
 import com.ravi.employee.service.EmployeeService;
 
@@ -29,23 +30,29 @@ public class EmployeeController {
 
 	@PostMapping("/newEmployee")
 	public ResponseEntity<Employee> create(@RequestBody Employee employee) {
-		 Employee create= employeeService.save(employee);
-		 return ResponseEntity.ok(create);
+
+		if (employee.getAge() <= 0) {
+			throw new InvalidAgeException("Please Enter the valid Age ");
+		}
+
+		Employee created = employeeService.save(employee);
+
+		return ResponseEntity.ok(created);
 	}
 
 	@GetMapping("/getAllEmp")
 	public ResponseEntity<List<Employee>> getAllEmployee() {
-		List<Employee> getallEmp=employeeService.findAll();
+		List<Employee> getallEmp = employeeService.findAll();
 		return ResponseEntity.ok(getallEmp);
 	}
 
 	@GetMapping("/emp/{id}")
 	public ResponseEntity<Employee> getEmpById(@PathVariable Long id) {
-		Employee employee =employeeService.findById(id);
-		
+		Employee employee = employeeService.findById(id);
+
 		if (employee == null) {
-	        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-	    }
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		}
 		return ResponseEntity.ok(employee);
 	}
 
