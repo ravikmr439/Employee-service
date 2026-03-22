@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ravi.employee.Exception.InvalidAgeException;
 import com.ravi.employee.Exception.ResourceNotFoundException;
 import com.ravi.employee.entity.Employee;
 import com.ravi.employee.repository.EmployeeRepository;
@@ -36,7 +37,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	public Employee findById(Long id) {
 		return employeeRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("Employee not found with id: " + id));
+				.orElseThrow(() -> new ResourceNotFoundException("Employee  not found with id: " + id));
 	}
 
 }

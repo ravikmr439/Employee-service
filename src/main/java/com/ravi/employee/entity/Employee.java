@@ -7,6 +7,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class Employee {
@@ -16,7 +18,9 @@ public class Employee {
 	private Long id;
 	private String firstName;
 	private String lastName;
-	private int age;
+	@NotNull(message = "Age is required")
+	@Min(value = 1, message = "Age must be greater than 0")
+	private Integer age;
 	
 	@Column(length=10)
 	private long phone;
@@ -25,7 +29,7 @@ public class Employee {
 
 	}
 
-	public Employee(Long id, String firstName, String lastName, int age, long phone) {
+	public Employee(Long id, String firstName, String lastName, Integer age, long phone) {
 
 		this.id = id;
 		this.firstName = firstName;
@@ -58,11 +62,11 @@ public class Employee {
 		this.lastName = lastName;
 	}
 
-	public int getAge() {
+	public Integer getAge() {
 		return age;
 	}
 
-	public void setAge(int age) {
+	public void setAge(Integer age) {
 		this.age = age;
 	}
 
